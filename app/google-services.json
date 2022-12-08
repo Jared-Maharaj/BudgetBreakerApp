@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "470391760800",
+    "project_id": "sfenbudgetbreaker",
+    "storage_bucket": "sfenbudgetbreaker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470391760800:android:46fcc8a4914f8a556666c5",
+        "android_client_info": {
+          "package_name": "com.example.budgetbreakerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "470391760800-3ibnoraetnlptbt0uc3furh4hl90141v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.budgetbreakerapp",
+            "certificate_hash": "c61ffc6a4c8f48e732efa59a8f9a30e389791b5a"
+          }
+        },
+        {
+          "client_id": "470391760800-n4aq6dc2i2vp1ubn33m09igj81kkh7bp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCilvbFxRjZdSUQB3cta3lSXtGxPPg01So"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "470391760800-n4aq6dc2i2vp1ubn33m09igj81kkh7bp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

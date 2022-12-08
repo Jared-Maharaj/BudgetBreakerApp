@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>LoginActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+LoginActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.budgetbreakerapp</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.ProgressDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.text.TextUtils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">LoginActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">EditText email</span><span class="s0">, </span><span class="s1">password</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button loginBtn</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">TextView loginQn</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">FirebaseAuth mAuth</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">ProgressDialog progressDialog</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">FirebaseAuth.AuthStateListener authStateListener</span><span class="s0">; </span><span class="s2">//remain logged in</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_login)</span><span class="s0">;</span>
+
+        <span class="s2">//initialization</span>
+        <span class="s1">email = findViewById(R.id.email)</span><span class="s0">;</span>
+        <span class="s1">password = findViewById(R.id.password)</span><span class="s0">;</span>
+        <span class="s1">loginBtn = findViewById(R.id.loginBtn)</span><span class="s0">;</span>
+        <span class="s1">loginQn = findViewById(R.id.loginQn)</span><span class="s0">;</span>
+
+        <span class="s2">//firebase</span>
+        <span class="s1">mAuth = FirebaseAuth.getInstance()</span><span class="s0">;</span>
+        <span class="s1">progressDialog = </span><span class="s0">new </span><span class="s1">ProgressDialog(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">authStateListener = </span><span class="s0">new </span><span class="s1">FirebaseAuth.AuthStateListener() { </span><span class="s2">//auto login if user has logged in before</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {</span>
+                <span class="s1">FirebaseUser user = mAuth.getCurrentUser()</span><span class="s0">;</span><span class="s2">//validation</span>
+                <span class="s0">if </span><span class="s1">(user!=</span><span class="s0">null</span><span class="s1">){ </span><span class="s2">//if user is already logged</span>
+                    <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(LoginActivity.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">; </span><span class="s2">//redirect</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                    <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span><span class="s0">;</span>
+
+        <span class="s1">loginQn.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(LoginActivity.</span><span class="s0">this, </span><span class="s1">RegistrationActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">; </span><span class="s2">//redirect</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">loginBtn.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">String emailString = email.getText().toString()</span><span class="s0">; </span><span class="s2">//get email</span>
+                <span class="s1">String passwordString = password.getText().toString()</span><span class="s0">; </span><span class="s2">//get password</span>
+
+                <span class="s0">if </span><span class="s1">(TextUtils.isEmpty(emailString)){ </span><span class="s2">//error check</span>
+                    <span class="s1">email.setError(</span><span class="s3">&quot;Email is Required&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">if </span><span class="s1">(TextUtils.isEmpty(passwordString)){ </span><span class="s2">//error check</span>
+                    <span class="s1">password.setError(</span><span class="s3">&quot;Password is Required&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s0">else</span><span class="s1">{</span>
+
+                    <span class="s1">progressDialog.setMessage(</span><span class="s3">&quot;Login is in Progress...&quot;</span><span class="s1">)</span><span class="s0">; </span><span class="s2">//pass error check progress</span>
+                    <span class="s1">progressDialog.setCanceledOnTouchOutside(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">progressDialog.show()</span><span class="s0">;</span>
+
+                    <span class="s1">mAuth.signInWithEmailAndPassword(emailString</span><span class="s0">, </span><span class="s1">passwordString).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;AuthResult&gt;() { </span><span class="s2">//firebase authenticate user adapter</span>
+                        <span class="s1">@Override</span>
+                        <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+                            <span class="s0">if </span><span class="s1">(task.isSuccessful()){</span>
+                                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(LoginActivity.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">; </span><span class="s2">//redirect</span>
+                                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                                <span class="s1">finish()</span><span class="s0">;</span>
+                                <span class="s1">progressDialog.dismiss()</span><span class="s0">;</span>
+                            <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                                <span class="s1">Toast.makeText(LoginActivity.</span><span class="s0">this, </span><span class="s1">task.getException().toString()</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">; </span><span class="s2">//display message if login was unsuccessful</span>
+                                <span class="s1">progressDialog.dismiss()</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">}</span>
+                    <span class="s1">})</span><span class="s0">;</span>
+
+                <span class="s1">}</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onStart() {</span>
+        <span class="s0">super</span><span class="s1">.onStart()</span><span class="s0">;</span>
+
+        <span class="s1">mAuth.addAuthStateListener(authStateListener)</span><span class="s0">; </span><span class="s2">//auto login check start</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onStop() {</span>
+        <span class="s0">super</span><span class="s1">.onStop()</span><span class="s0">;</span>
+
+        <span class="s1">mAuth.removeAuthStateListener(authStateListener)</span><span class="s0">; </span><span class="s2">//auto login check stop</span>
+
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

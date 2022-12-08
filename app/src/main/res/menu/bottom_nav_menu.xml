@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"
+        app:cnb_iconColor="#00A86B"/>
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        android:title="Filter"
+        app:cnb_iconColor="#FD3C4A"/>
+    <item
+        android:id="@+id/analytics"
+        android:icon="@drawable/ic_baseline_pie_chart_24"
+        android:title="Analytics"
+        app:cnb_iconColor="#7F3DFF" />
+    <item
+        android:id="@+id/history"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="History"
+        app:cnb_iconColor="#0077FF" />
+
+</menu>
